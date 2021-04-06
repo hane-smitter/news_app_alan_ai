@@ -4,18 +4,23 @@ import { Grid, Typography, Grow } from "@material-ui/core";
 import useStyles from './styles';
 import NewsCard from "../NewsCard/NewsCard.js";
 
-const NewsCards = ({ article: articles }) => {
+const NewsCards = ({ article: articles, activeArticle }) => {
 
     const classes = useStyles();
 
     const defaultCards = [
         { color: "#00838f", title: "Latest News", text: "Give me the Latest News" },
         {
+            color: "#800080",
+            title: "News By Region",
+            info: "Kenya, Africa",
+            text: "Show me news in...",
+        },
+        {
             color: "#1565c0",
             title: "News By Categories",
-            info:
-                "Business, Entertainment, General, Health, Science, Sports, Technology",
-            text: "Give me the News from ...",
+            info: "Business, Entertainment, General, Health, Science, Sports, Technology",
+            text: "Get me news about...",
         },
         {
             color: "#4527a0",
@@ -26,7 +31,7 @@ const NewsCards = ({ article: articles }) => {
         {
             color: "#283593",
             title: "News By Sources",
-            info: "CNN, Wired, BBC News, Time, IGN, Buzzfeed, ABC news...",
+            info: "CNN, Wired, BBC News, Time, IGN, Buzzfeed, Entertainment Weekly ABC news...",
             text: "Give me news from...",
         },
     ];
@@ -71,7 +76,7 @@ const NewsCards = ({ article: articles }) => {
                         style={{ display: "flex" }}
                         key={Math.random().toString(36).substr(2, 9)}
                     >
-                        <NewsCard article={article} i={i} />
+                        <NewsCard article={article} i={i} activeArticle={activeArticle} />
                     </Grid>
                 ))}
             </Grid>
