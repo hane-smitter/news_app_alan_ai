@@ -14,25 +14,25 @@ const NewsCards = ({ article: articles, activeArticle }) => {
             color: "#800080",
             title: "News By Region",
             info: "Kenya, Africa",
-            text: "Show me news in...",
+            text: "Show me news in Kenya",
         },
         {
             color: "#1565c0",
             title: "News By Categories",
             info: "Business, Entertainment, General, Health, Science, Sports, Technology",
-            text: "Get me news about...",
+            text: "Get me news about sports",
         },
         {
             color: "#4527a0",
             title: "News By Terms",
-            info: "Bitcoin, Playstation5, Smartphones, Donald trump...",
+            info: "Bitcoin, Playstation5, Smartphones, Donald trump, ...",
             text: "What's cooking with PlayStation5",
         },
         {
             color: "#283593",
             title: "News By Sources",
-            info: "CNN, Wired, BBC News, Time, IGN, Buzzfeed, Entertainment Weekly ABC news...",
-            text: "Give me news from...",
+            info: "CNN, Wired, BBC News, Time, IGN, Buzzfeed, Entertainment Weekly, ABC news, ...",
+            text: "Give me news from CNN",
         },
     ];
 
@@ -54,7 +54,7 @@ const NewsCards = ({ article: articles, activeArticle }) => {
                                         {infoCard.info}
                                     </Typography>
                                 ) : null}
-                                <Typography variant="h6">Try saying:<br /><i>{infoCard.text}</i></Typography>
+                                <Typography variant="h6">Try saying:<br /><small><i>{infoCard.text}</i></small></Typography>
                             </div>
                         </Grid>
                     ))}

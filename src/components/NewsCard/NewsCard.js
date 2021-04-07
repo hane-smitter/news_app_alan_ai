@@ -11,7 +11,7 @@ import {
 import classNames from 'classnames';
 
 import useStyles from "./styles";
-import defImg from '../../images/news_default.jpg';
+import defImg from '../../images/news_default.svg';
 
 const NewsCard = ({ article : {
     author,
