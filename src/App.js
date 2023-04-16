@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import alanBtn from "@alan-ai/alan-sdk-web";
 import WTN from "words-to-numbers";
 
-import useStyles from "./styles";
+import SC from "./styled";
 import NewsCards from "./components/NewsCards/NewsCards";
 import logo from "./images/ai_logo.png";
 
-const alanSDKKey =
-  "7e5e70d2d75af1ee5a6f4410100b8bcf2e956eca572e1d8b807a3e2338fdd0dc/stage";
+const alanSDKKey = process.env.REACT_APP_ALAN_KEY;
 
-// other command from cloud: `errorOccured` -> `errorMsg` string
+// other incoming.command from cloud: `errorOccured` -> `errorMsg` string
 /* 
 SUPPORTED COUNTRIES
 
@@ -25,38 +24,39 @@ const APP_SUPPORTED_NEWS_BY_COUNTRY = {
 const App = () => {
   const [newsArticle, setNewsArticle] = useState([]);
   const [activeArticle, setActiveArticle] = useState(-1);
-  const classes = useStyles();
+  const aiBtn = useRef({});
 
-  useEffect(() => {
-    alanBtn({
-      key: alanSDKKey,
-      onCommand: ({
-        command,
+  /* COMMANDS DATA */
+  /* 
         news,
         number,
         errorMsg,
         supportedCountries,
-        error,
-      }) => {
+        error
+  */
+  useEffect(() => {
+    aiBtn.current.btnInstance = alanBtn({
+      key: alanSDKKey,
+      onCommand: (incoming) => {
         console.log(`number on the alan onCommand declaration`);
-        console.log(number);
-        if (command === "NEW_HEADLINES") {
-          setNewsArticle(news);
+        console.log(incoming.number);
+        if (incoming.command === "NEW_HEADLINES") {
+          setNewsArticle(incoming.news);
           setActiveArticle(-1);
-        } else if (command === "SHOW_DEVELOPER") {
+        } else if (incoming.command === "SHOW_DEVELOPER") {
           // open you portfolio website
-        } else if (command === "HIGHLIGHT") {
+        } else if (incoming.command === "HIGHLIGHT") {
           setActiveArticle(
             (previousActiveArticle) => previousActiveArticle + 1
           );
-        } else if (command === "error") {
+        } else if (incoming.command === "errorOccured") {
           console.group("Error from ai assistant");
-          console.error(error);
+          console.error(incoming.errorMsg);
           console.groupEnd();
-        } else if (command === "open") {
-          let no = number;
-          if (typeof number == "string") {
-            no = WTN(number, { fuzzy: true });
+        } else if (incoming.command === "open") {
+          let no = incoming.number;
+          if (typeof no == "string") {
+            no = WTN(no, { fuzzy: true });
           }
           const articleNo = no - 1;
           if (no > 20) {
@@ -65,7 +65,7 @@ const App = () => {
             );
           }
           let ifOpened = window.open(
-            news[articleNo].url,
+            incoming.news[articleNo].url,
             "_blank",
             " rel=noreferrer"
           );
@@ -80,19 +80,21 @@ const App = () => {
       },
     });
 
-    return () => alanBtn.remove();
+    return () => {
+      if (aiBtn.current.btnInstance) {
+        aiBtn.current.btnInstance.remove();
+      }
+    };
   }, []);
 
   return (
     <div>
-      <div className={classes.logoContainer}>
-        <img src={logo} alt="NLP app logo" className={classes.alanLogo} />
-      </div>
+      <SC.LogoContainer>
+        <SC.Logo src={logo} />
+      </SC.LogoContainer>
       <NewsCards article={newsArticle} activeArticle={activeArticle} />
     </div>
   );
-
-  // return <Btn />;
 };
 
 export default App;
