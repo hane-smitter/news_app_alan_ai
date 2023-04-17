@@ -1,3 +1,5 @@
+import Link from "@mui/material/Link";
+import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardActionArea from "@mui/material/CardActionArea";
 import styled from "@mui/system/styled";
@@ -31,6 +33,17 @@ export default {
   grid: {
     display: "flex",
   },
+  ArticleLinkBtn: styled((props) => {
+    return (
+      <Button
+        size="small"
+        color="primary"
+        component={Link}
+        target="_blank"
+        {...props}
+      />
+    );
+  })({}),
   //   details: {
   //     display: "flex",
   //     justifyContent: "space-between",
