@@ -1,5 +1,4 @@
-import Grid from "@mui/material/Grid";
-import Grow from "@mui/material/Grow";
+import React from "react";
 
 import NewsCard from "../NewsCard";
 import SC from "./styled";
@@ -30,4 +29,4 @@ const NewsCards = ({ articles, activeArticle }) => {
   );
 };
 
-export default NewsCards;
+export default React.memo(NewsCards);

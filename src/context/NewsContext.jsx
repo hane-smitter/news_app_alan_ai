@@ -1,16 +1,9 @@
-import { createContext, useState } from "react";
-import useAlanAi from "../hooks/useAlanAi";
+import { createContext } from "react";
 
 const NewsContext = createContext({
-  newsArticles: [],
+  news: [],
   activeArticle: {},
   addElemRef: () => {},
 });
-
-export const NewsProvider = ({ children }) => {
-  const news = useAlanAi();
-
-  return <NewsContext.Provider value={news}>{children}</NewsContext.Provider>;
-};
 
 export default NewsContext;

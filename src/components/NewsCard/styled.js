@@ -17,9 +17,10 @@ export default {
   `
   ),
   ArticleCardActions: styled(CardActionArea)({
-    padding: "0 16px 8px 16px",
+    padding: "5px 16px",
     display: "flex",
     justifyContent: "space-between",
+    alignItems: "center",
   }),
   //   media: {
   //     height: 250,
@@ -44,17 +45,4 @@ export default {
       />
     );
   })({}),
-  //   details: {
-  //     display: "flex",
-  //     justifyContent: "space-between",
-  //     margin: "20px",
-  //   },
-  //   title: {
-  //     padding: "0 16px",
-  //   },
-  //   cardActions: {
-  //     padding: "0 16px 8px 16px",
-  //     display: "flex",
-  //     justifyContent: "space-between",
-  //   },
 };

@@ -29,13 +29,16 @@ const NewsCard = ({
         sx={{ height: "250px" }}
         component="img"
         title={title?.substr(0, 30)}
-        src={urlToImage}
+        src={urlToImage || ""}
         onError={function (event) {
           event.target.src = defaultImgSrc;
         }}
       />
       <Stack sx={{ margin: "20px" }} direction="column">
-        <Stack direction="row" sx={{ width: "100%", justifyContent: "space-between" }}>
+        <Stack
+          direction="row"
+          sx={{ width: "100%", justifyContent: "space-between" }}
+        >
           <Typography variant="caption" color="textSecondary" component="h2">
             {new Date(publishedAt).toDateString()}
           </Typography>
@@ -52,13 +55,15 @@ const NewsCard = ({
       <Typography gutterBottom variant="h5" sx={{ padding: "0 16px" }}>
         {title}
       </Typography>
-      <CardActionArea href={url} target="_blank">
-        <CardContent>
-          <Typography variant="body2" color="textSecondary" component="p">
-            {String(description).replace(/<[^>]*>/g, "")}
-          </Typography>
-        </CardContent>
-      </CardActionArea>
+      {description && (
+        <CardActionArea href={url} target="_blank">
+          <CardContent>
+            <Typography variant="body2" color="textSecondary" component="p">
+              {String(description).replace(/<[^>]*>/g, "")}
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+      )}
 
       <SC.ArticleCardActions disableRipple component="div">
         <SC.ArticleLinkBtn href={url}>Read More</SC.ArticleLinkBtn>

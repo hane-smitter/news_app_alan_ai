@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import alanBtn from "@alan-ai/alan-sdk-web";
 import wtn from "words-to-numbers";
+import { useNavigate } from "react-router-dom";
 
 const alanSDKKey = process.env.REACT_APP_ALAN_KEY;
 
@@ -9,6 +10,7 @@ const useAlanAi = () => {
   const [activeArticle, setActiveArticle] = useState(-1);
   const newsElementRefs = useRef([]);
   const aiBtn = useRef({});
+  const navigate = useNavigate();
 
   const addElemRef = useCallback(function (ref) {
     // console.log(ref);
@@ -17,6 +19,9 @@ const useAlanAi = () => {
 
   function sendText(txt) {
     aiBtn.current?.btnInstance?.sendText(txt);
+  }
+  function resetNews() {
+    setNews([]);
   }
 
   /* COMMANDS DATA */
@@ -36,11 +41,24 @@ const useAlanAi = () => {
 
         switch (incoming.command) {
           case "NEW_HEADLINES":
+            console.log(incoming.news);
             setNews(incoming.news);
             setActiveArticle(-1);
             break;
           case "SHOW_DEVELOPER":
-            // open you portfolio website
+            let opened = window.open(
+              "https://zacky.web.app",
+              "_blank",
+              " rel=noreferrer"
+            );
+            !Boolean(opened) &&
+              alanBtn().playText(
+                "I could not open a website. Please check browser settings to allow popups on this website."
+              );
+            break;
+          case "GOTO_HOMEPAGE":
+            resetNews();
+            navigate("/", { replace: true });
             break;
           case "HIGHLIGHT":
             const indexNum = incoming.articleIdx;
@@ -116,7 +134,7 @@ const useAlanAi = () => {
     };
   }, []);
 
-  return { news, activeArticle, addElemRef, sendText };
+  return { news, activeArticle, addElemRef, sendText, resetNews };
 };
 
 export default useAlanAi;

@@ -5,21 +5,23 @@ import NewsCards from "../NewsCards";
 import NewsContext from "../../context/NewsContext";
 import SC from "./styled";
 import logo from "../../images/ai_logo.png";
-import { Link, Navigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const NewsApp = () => {
-  const { news, activeArticle } = useContext(NewsContext);
-  console.log({ newsContext: news, activeArticleCtx: activeArticle });
-  const location = useLocation();
+  const { news, activeArticle, resetNews } = useContext(NewsContext);
+  const navigate = useNavigate();
 
-  if (!news.length) return <Navigate to="/" />;
+  function routeToHome() {
+    resetNews();
+    navigate("/");
+  }
 
   return (
     <Container>
       <SC.LogoContainer>
-        <Link to="/" state={{ forceRoute: true }}>
+        <div onClick={routeToHome} style={{ cursor: "pointer" }}>
           <SC.Logo src={logo} />
-        </Link>
+        </div>
       </SC.LogoContainer>
       <NewsCards articles={news} activeArticle={activeArticle} />
     </Container>
