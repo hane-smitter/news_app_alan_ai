@@ -1,7 +1,6 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, ScrollRestoration } from "react-router-dom";
 
-import ViewSwitcher from "../../ViewSwitch/ViewSwitch";
 import Chat from "../Chat";
 import NewsContext from "../../context/NewsContext";
 import useAlanAi from "../../hooks/useAlanAi";
@@ -10,10 +9,9 @@ const AppLayout = () => {
   const news = useAlanAi();
   return (
     <NewsContext.Provider value={news}>
+      <ScrollRestoration />
       <Chat />
-      <ViewSwitcher>
-        <Outlet />
-      </ViewSwitcher>
+      <Outlet />
     </NewsContext.Provider>
   );
 };

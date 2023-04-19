@@ -7,7 +7,7 @@ import SC from "./styled";
 import logo from "../../images/ai_logo.png";
 import { useNavigate } from "react-router-dom";
 
-const NewsApp = () => {
+const News = () => {
   const { news, activeArticle, resetNews } = useContext(NewsContext);
   const navigate = useNavigate();
 
@@ -28,4 +28,4 @@ const NewsApp = () => {
   );
 };
 
-export default NewsApp;
+export default News;

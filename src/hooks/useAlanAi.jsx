@@ -8,6 +8,8 @@ const alanSDKKey = process.env.REACT_APP_ALAN_KEY;
 const useAlanAi = () => {
   const [news, setNews] = useState([]);
   const [activeArticle, setActiveArticle] = useState(-1);
+  // const countriesSupported = useRef([]);
+  const [countriesSupported, setCountriesSupported] = useState([["", ""]]);
   const newsElementRefs = useRef([]);
   const aiBtn = useRef({});
   const navigate = useNavigate();
@@ -17,6 +19,9 @@ const useAlanAi = () => {
     if (ref) newsElementRefs.current?.push(ref);
   }, []);
 
+  // function setCountriesSupported(countries) {
+  //   countriesSupported.current = countries;
+  // }
   function sendText(txt) {
     aiBtn.current?.btnInstance?.sendText(txt);
   }
@@ -59,6 +64,14 @@ const useAlanAi = () => {
           case "GOTO_HOMEPAGE":
             resetNews();
             navigate("/", { replace: true });
+            break;
+          case "SHOW_SUPPORTED_COUNTRIES":
+            setCountriesSupported(Object.entries(incoming.supportedCountries));
+            // console.log({ list: incoming.supportedCountries });
+            console.log({
+              AlanList: countriesSupported,
+            });
+            navigate("/list");
             break;
           case "HIGHLIGHT":
             const indexNum = incoming.articleIdx;
@@ -134,7 +147,14 @@ const useAlanAi = () => {
     };
   }, []);
 
-  return { news, activeArticle, addElemRef, sendText, resetNews };
+  return {
+    news,
+    activeArticle,
+    addElemRef,
+    sendText,
+    resetNews,
+    countriesSupported,
+  };
 };
 
 export default useAlanAi;
