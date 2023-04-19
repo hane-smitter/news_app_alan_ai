@@ -4,6 +4,7 @@ import NewsCard from "../NewsCard";
 import SC from "./styled";
 import { useContext } from "react";
 import NewsContext from "../../context/NewsContext";
+import { Typography } from "@mui/material";
 
 /* 
 const itemEls = useRef(new Array())
@@ -14,7 +15,7 @@ const itemEls = useRef(new Array())
 const NewsCards = ({ articles, activeArticle }) => {
   const { addElemRef } = useContext(NewsContext);
 
-  return (
+  return articles.length ? (
     <SC.GridContainer>
       {articles.map((article, i) => (
         <SC.GridItem
@@ -26,6 +27,10 @@ const NewsCards = ({ articles, activeArticle }) => {
         </SC.GridItem>
       ))}
     </SC.GridContainer>
+  ) : (
+    <Typography variant="h4" fontWeight={"bold"}>
+      There is no News :(
+    </Typography>
   );
 };
 

@@ -1,9 +1,12 @@
 import React, { useContext } from "react";
 import Grid from "@mui/material/Grid";
 import { Navigate } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
 
 import NewsContext from "../../context/NewsContext";
-import { Container } from "@mui/material";
+import SC from "./styled";
 
 const IndexCountries = () => {
   const { countriesSupported } = useContext(NewsContext);
@@ -22,8 +25,8 @@ const IndexCountries = () => {
   */
 
   return (
-    <Container maxWidth="md">
-      <Grid container spacing={2}>
+    <Container maxWidth="md" sx={{ paddingBottom: "30px" }}>
+      <SC.GridContainer>
         {/* Format of array: [["", ""]] */}
         {countriesSupported[0][0]?.length ? (
           (() => {
@@ -40,22 +43,26 @@ const IndexCountries = () => {
             while (counter <= indexedCountries?.length) {
               idx = counter - 1;
               gridItemChildData.push(
-                <div key={counter + "" + counter}>
-                  {indexedCountries[idx][1]}
-                </div>
+                <SC.CountryInfo key={uuidv4()}>
+                  <SC.CountryFlag
+                    src={`https://flagcdn.com/${indexedCountries[idx][0]}.svg`}
+                  />
+                  <SC.CountryName variant="body2">
+                    {indexedCountries[idx][1]}
+                  </SC.CountryName>
+                </SC.CountryInfo>
               );
 
               if (counter % 4 === 0) {
                 gridItemData.push(gridItemChildData);
+                // console.log({ gridItemData });
 
                 gridItemChildData = [];
               }
 
               if (counter % (4 * 2) === 0) {
                 gridContainerData.push(
-                  <Grid item key={counter}>
-                    {gridItemChildData}
-                  </Grid>
+                  <SC.GridItem key={uuidv4()}>{gridItemData}</SC.GridItem>
                 );
                 gridItemData = [];
               }
@@ -70,25 +77,21 @@ const IndexCountries = () => {
               indexedCountries[idx][1]
             );
             gridItemChildData.length &&
-              gridItemData.push(
-                <div key={counter + "" + counter + "" + counter}>
-                  {indexedCountries[idx][1]}
-                </div>
-              );
+              gridItemData.push(<div key={uuidv4()}>{gridItemChildData}</div>);
             gridItemData.length &&
               gridContainerData.push(
-                <Grid item key={counter}>
-                  {gridItemChildData}
-                </Grid>
+                <SC.GridItem key={uuidv4()}>{gridItemData}</SC.GridItem>
               );
 
             console.log({ gridContainerData });
             return gridContainerData;
           })()
         ) : (
-          <div>No list to render</div>
+          <Typography variant="h5" fontWeight={"bold"}>
+            No list to show
+          </Typography>
         )}
-      </Grid>
+      </SC.GridContainer>
     </Container>
   );
 };

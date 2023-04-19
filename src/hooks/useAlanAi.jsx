@@ -49,6 +49,7 @@ const useAlanAi = () => {
             console.log(incoming.news);
             setNews(incoming.news);
             setActiveArticle(-1);
+            navigate("/news");
             break;
           case "SHOW_DEVELOPER":
             let opened = window.open(
@@ -62,7 +63,6 @@ const useAlanAi = () => {
               );
             break;
           case "GOTO_HOMEPAGE":
-            resetNews();
             navigate("/", { replace: true });
             break;
           case "SHOW_SUPPORTED_COUNTRIES":
@@ -88,6 +88,7 @@ const useAlanAi = () => {
             // setActiveArticle(
             //   (previousActiveArticle) => previousActiveArticle + 1
             // );
+
             break;
           case "REPORT_ERROR_MSG":
             console.group("Error from ai assistant");
