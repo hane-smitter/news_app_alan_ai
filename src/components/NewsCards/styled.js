@@ -1,5 +1,7 @@
 import styled from "@mui/system/styled";
 import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 
 export default {
   GridContainer: styled((props) => {
@@ -18,4 +20,12 @@ export default {
     ...(isActive && { outline: "2px solid black" }),
     padding: "0!important",
   })),
+  ShowMoreContainer: styled(Box)({
+    width: "100%",
+    textAlign: "center",
+    marginTop: "10px",
+  }),
+  ShowMoreBtn: styled(Button)({
+    outline: "1px solid",
+  }),
 };

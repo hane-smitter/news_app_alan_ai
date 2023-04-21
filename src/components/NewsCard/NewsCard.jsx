@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createRef } from "react";
+import React from "react";
 import Stack from "@mui/material/Stack";
 import CardActionArea from "@mui/material/CardActionArea";
 import CardContent from "@mui/material/CardContent";
@@ -49,7 +49,7 @@ const NewsCard = ({
           )}
         </Stack>
         <Typography variant="body2" color="textSecondary" component="h2">
-          {source.name}
+          {source?.name}
         </Typography>
       </Stack>
       <Typography gutterBottom variant="h5" sx={{ padding: "0 16px" }}>
@@ -75,4 +75,4 @@ const NewsCard = ({
   );
 };
 
-export default NewsCard;
+export default React.memo(NewsCard);

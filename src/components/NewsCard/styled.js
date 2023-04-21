@@ -21,6 +21,7 @@ export default {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
+    cursor: "default"
   }),
   //   media: {
   //     height: 250,

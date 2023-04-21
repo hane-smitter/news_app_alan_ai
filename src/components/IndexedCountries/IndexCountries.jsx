@@ -87,9 +87,17 @@ const IndexCountries = () => {
             return gridContainerData;
           })()
         ) : (
-          <Typography variant="h5" fontWeight={"bold"}>
-            No list to show
-          </Typography>
+          <div>
+            <Typography variant="h5" fontWeight={"bold"}>
+              No list to show yet
+            </Typography><br />
+            <Typography variant="body1" sx={{ color: "text.hint" }}>
+              Open Microphone and say{" "}
+              <span style={{ fontStyle: "italic" }}>
+                "show me country list"
+              </span>
+            </Typography>
+          </div>
         )}
       </SC.GridContainer>
     </Container>

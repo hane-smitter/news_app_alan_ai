@@ -8,6 +8,7 @@ export default {
     return <Grid container spacing={2} {...props} />;
   })({
     justifyContent: "flex-start",
+    margin: 0,
     // gap: "10px",
   }),
   GridItem: styled((props) => {

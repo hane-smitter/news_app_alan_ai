@@ -4,6 +4,7 @@ const NewsContext = createContext({
   news: [],
   activeArticle: {},
   addElemRef: () => {},
+  storeElemRefs: () => {},
 });
 
 export default NewsContext;

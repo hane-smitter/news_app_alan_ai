@@ -8,15 +8,29 @@ const alanSDKKey = process.env.REACT_APP_ALAN_KEY;
 const useAlanAi = () => {
   const [news, setNews] = useState([]);
   const [activeArticle, setActiveArticle] = useState(-1);
-  // const countriesSupported = useRef([]);
   const [countriesSupported, setCountriesSupported] = useState([["", ""]]);
   const newsElementRefs = useRef([]);
   const aiBtn = useRef({});
   const navigate = useNavigate();
 
-  const addElemRef = useCallback(function (ref) {
-    // console.log(ref);
-    if (ref) newsElementRefs.current?.push(ref);
+  /**
+   * Stores the references to DOM element
+   * @param {Array} refsArray - Array containing refs
+   */
+  const storeElemRefs = useCallback(function (refsArray) {
+    if (refsArray?.length) {
+      console.log("length of received refs", refsArray?.length);
+      newsElementRefs.current = refsArray;
+    }
+  }, []);
+
+  const addElemRef = useCallback(function (ref, limit) {
+    console.log("ref addition ran");
+    const elRefs = newsElementRefs.current;
+    if (ref && elRefs?.length < limit) {
+      console.log("ref addition ran: ", ref);
+      elRefs?.push(ref);
+    }
   }, []);
 
   // function setCountriesSupported(countries) {
@@ -29,14 +43,11 @@ const useAlanAi = () => {
     setNews([]);
   }
 
-  /* COMMANDS DATA */
-  /* 
-        news,
-        number,
-        REPORT_ERROR_MSG,
-        supportedCountries,
-        error
-  */
+  useEffect(() => {
+    // reset refs to remove old references
+    newsElementRefs.current = [];
+  }, [news]);
+
   useEffect(() => {
     aiBtn.current.btnInstance = alanBtn({
       key: alanSDKKey,
@@ -67,27 +78,15 @@ const useAlanAi = () => {
             break;
           case "SHOW_SUPPORTED_COUNTRIES":
             setCountriesSupported(Object.entries(incoming.supportedCountries));
-            // console.log({ list: incoming.supportedCountries });
-            console.log({
-              AlanList: countriesSupported,
-            });
             navigate("/list");
             break;
           case "HIGHLIGHT":
             const indexNum = incoming.articleIdx;
-            console.log({ indexNum });
-            console.log({ newsElementLength: newsElementRefs.current?.length });
-            console.group("Elem in focus");
-            console.log(newsElementRefs.current[indexNum]);
-            console.groupEnd();
             newsElementRefs.current[indexNum]?.scrollIntoView({
               behavior: "smooth",
               block: "start",
             });
             setActiveArticle(indexNum);
-            // setActiveArticle(
-            //   (previousActiveArticle) => previousActiveArticle + 1
-            // );
 
             break;
           case "REPORT_ERROR_MSG":
@@ -101,11 +100,11 @@ const useAlanAi = () => {
               no = wtn(no, { fuzzy: true });
             }
             const articleNo = no - 1;
-            if (no > 20) {
-              return alanBtn().playText(
-                "The article number is out of range! Try again!"
-              );
-            }
+            // if (no > 20) {
+            //   return alanBtn().playText(
+            //     "The article number is out of range! Try again!"
+            //   );
+            // }
             let ifOpened = window.open(
               incoming.news[articleNo].url,
               "_blank",
@@ -139,7 +138,17 @@ const useAlanAi = () => {
       //     }
       //   }
       // },
-    });
+    }).callProjectApi(
+      "getCountryNewsSources",
+      { name: "country" },
+      function (error, result) {
+        console.log(result);
+        if (error) {
+          return console.error("Could not get list of indexed countries");
+        }
+        setCountriesSupported(Object.entries(result.supportedCountries));
+      }
+    );
 
     return () => {
       if (aiBtn.current.btnInstance) {
@@ -154,7 +163,9 @@ const useAlanAi = () => {
     addElemRef,
     sendText,
     resetNews,
+    storeElemRefs,
     countriesSupported,
+    aiBtn: aiBtn.current.btnInstance,
   };
 };
 
