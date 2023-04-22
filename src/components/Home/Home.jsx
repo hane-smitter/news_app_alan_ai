@@ -46,17 +46,9 @@ const Home = () => {
           margin: 0,
         }}
       >
-        <Typography
-          variant="h1"
-          sx={{
-            color: "text.hint",
-            textTransform: "capitalize",
-            textAlign: "center",
-            width: "100%",
-          }}
-        >
-          quick start
-        </Typography>
+        <div style={{ width: "100%", textAlign: "center", marginBottom: 15 }}>
+          <SC.QuickStartHeading variant="h1">quick start</SC.QuickStartHeading>
+        </div>
         {defaultCards.map((infoCard, idx) => (
           <Grid
             item

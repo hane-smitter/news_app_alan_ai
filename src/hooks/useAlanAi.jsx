@@ -138,7 +138,9 @@ const useAlanAi = () => {
       //     }
       //   }
       // },
-    }).callProjectApi(
+    });
+
+    aiBtn.current.btnInstance.callProjectApi(
       "getCountryNewsSources",
       { name: "country" },
       function (error, result) {

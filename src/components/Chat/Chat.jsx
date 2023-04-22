@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import NewsContext from "../../context/NewsContext";
 
 const Chat = () => {
-  const { sendText } = useContext(NewsContext); // Temporary functionality
+  const { sendText, aiBtn } = useContext(NewsContext); // Temporary functionality
   // console.log("sendText function:: ", sendText);
   const [value, setValue] = useState("");
 
@@ -10,7 +10,12 @@ const Chat = () => {
     setValue(event.target.value);
   }
   function handleInputTalk() {
-    sendText(value);
+    if (aiBtn) {
+      aiBtn.sendText(value);
+    } else {
+      console.warn("Ai btn frm context is unavailable with status: ", aiBtn);
+      sendText(value);
+    }
   }
 
   return (
