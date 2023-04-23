@@ -7,28 +7,37 @@ const alanSDKKey = process.env.REACT_APP_ALAN_KEY;
 
 const useAlanAi = () => {
   const [news, setNews] = useState([]);
+  // const [paginatedNews, setPaginatedNews] = useState([]);
   const [activeArticle, setActiveArticle] = useState(-1);
   const [countriesSupported, setCountriesSupported] = useState([["", ""]]);
   const newsElementRefs = useRef([]);
   const aiBtn = useRef({});
+  const articleReadMoreWindow = useRef(null);
   const navigate = useNavigate();
 
   /**
    * Stores the references to DOM element
    * @param {Array} refsArray - Array containing refs
    */
-  const storeElemRefs = useCallback(function (refsArray) {
-    if (refsArray?.length) {
-      console.log("length of received refs", refsArray?.length);
-      newsElementRefs.current = refsArray;
+  const openTab = useCallback(function (url, windowName) {
+    let tabReference = articleReadMoreWindow.current;
+
+    tabReference = window.open(url, windowName);
+    if (tabReference) {
+      tabReference.focus();
     }
+    // if (tabReference === null || tabReference.closed) {
+    // } else {
+    // }
+
+    return tabReference;
   }, []);
 
-  const addElemRef = useCallback(function (ref, limit) {
-    console.log("ref addition ran");
+  const addElemRef = useCallback(function (ref, numOfItemsInView) {
+    console.log("addElemRef ran");
     const elRefs = newsElementRefs.current;
-    if (ref && elRefs?.length < limit) {
-      console.log("ref addition ran: ", ref);
+    if (ref && elRefs?.length < numOfItemsInView) {
+      console.log("addElemRef new addition: ", ref);
       elRefs?.push(ref);
     }
   }, []);
@@ -49,7 +58,7 @@ const useAlanAi = () => {
   }, [news]);
 
   useEffect(() => {
-    aiBtn.current.btnInstance = alanBtn({
+    let assistantBtn = alanBtn({
       key: alanSDKKey,
       onCommand: (incoming) => {
         console.log(`number on the alan onCommand declaration`);
@@ -94,29 +103,47 @@ const useAlanAi = () => {
             console.error(incoming.errorMsg);
             console.groupEnd();
             break;
-          case "OPEN_ARTICLE": // remember: also change in cloud SDK
-            let no = incoming.number;
-            if (typeof no == "string") {
-              no = wtn(no, { fuzzy: true });
-            }
-            const articleNo = no - 1;
+          case "OPEN_ARTICLE":
             // if (no > 20) {
             //   return alanBtn().playText(
             //     "The article number is out of range! Try again!"
             //   );
             // }
-            let ifOpened = window.open(
-              incoming.news[articleNo].url,
-              "_blank",
-              " rel=noreferrer"
-            );
-            console.log("ifOpened");
-            console.log(ifOpened);
-            !!ifOpened
-              ? alanBtn().playText("Opening...")
-              : alanBtn().playText(
-                  "Could not open this article because it was blocked by your browser. Kindly check  your settings to allow pop-ups for this website."
+            const numOfNewsInView = newsElementRefs.current?.length;
+            try {
+              console.log("incoming.article: ", incoming.article);
+              let num = incoming.number;
+              if (typeof num == "string") {
+                num = wtn(num, { fuzzy: true });
+              }
+              console.log("numOfNewsInView(useAlan hook): ", numOfNewsInView);
+              if (num > numOfNewsInView)
+                throw new Error(`Article ${num} is out of range.`);
+
+              const articleIdx = num - 1;
+              let articleUrl = "";
+              if (Array.isArray(incoming.article)) {
+                articleUrl = incoming.article[articleIdx].url;
+              } else {
+                articleUrl = incoming.article.url;
+              }
+
+              let articleOpened = openTab(articleUrl, "readMoreWindow");
+
+              if (!articleOpened) throw new Error("popup blocked");
+            } catch (error) {
+              aiBtn.current.btnInstance.activate();
+              if (error?.message === "popup blocked") {
+                aiBtn.current.btnInstance.playText(
+                  "Link to article could not be opened. To fix this, allow popups for this website from your browser settings."
                 );
+              }
+              aiBtn.current.btnInstance.playCommand({
+                command: "REPORT_ERROR_MSG",
+                errorMsg: error.message,
+              });
+              aiBtn.current.btnInstance.deactivate();
+            }
             break;
         }
       },
@@ -140,7 +167,9 @@ const useAlanAi = () => {
       // },
     });
 
-    aiBtn.current.btnInstance.callProjectApi(
+    aiBtn.current.btnInstance = assistantBtn;
+
+    assistantBtn.callProjectApi(
       "getCountryNewsSources",
       { name: "country" },
       function (error, result) {
@@ -153,8 +182,8 @@ const useAlanAi = () => {
     );
 
     return () => {
-      if (aiBtn.current.btnInstance) {
-        aiBtn.current.btnInstance.remove();
+      if (assistantBtn) {
+        assistantBtn.remove();
       }
     };
   }, []);
@@ -165,7 +194,6 @@ const useAlanAi = () => {
     addElemRef,
     sendText,
     resetNews,
-    storeElemRefs,
     countriesSupported,
     aiBtn: aiBtn.current.btnInstance,
   };

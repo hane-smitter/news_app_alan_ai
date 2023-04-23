@@ -10,6 +10,7 @@ export default {
     left: "50%",
     bottom: 0,
     transform: "translateX(-50%)",
+    whiteSpace: "nowrap",
   }),
   NavMenuItem: styled(Link)({
     color: "#333",
@@ -26,7 +27,7 @@ export default {
       color: "#0D88FE",
     },
     "&.active": {
-        color: darken("#0D88FE", 0.3)
+      color: darken("#0D88FE", 0.3),
     },
 
     "&:nth-of-type(1):hover ~ .dot": {

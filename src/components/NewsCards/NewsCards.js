@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Typography from "@mui/material/Typography";
 
 import NewsCard from "../NewsCard";
@@ -13,10 +13,9 @@ const itemEls = useRef(new Array())
 */
 const NewsCards = ({ articles, activeArticle }) => {
   const { addElemRef } = useContext(NewsContext);
-  const [news, setNews] = useState([]);
-  const refs = useRef([]);
+  const [displayNews, setDisplayNews] = useState([]);
   // const [, triggerRender] = useState(false);
-  // const news = useRef([]);
+  // const displayNews = useRef([]);
   const [newsStartPage, setStartPage] = useState(0);
   const perPage = 20;
 
@@ -26,26 +25,31 @@ const NewsCards = ({ articles, activeArticle }) => {
 
   useEffect(() => {
     if (articles?.length) {
+      console.log({ newsStartPage });
       console.log("useeffect has run");
+      console.log("newsStartPage value: ", newsStartPage);
       let newArticles = [];
       console.log({ "articles?.length": articles?.length });
       for (let idx = newsStartPage; idx < newsStartPage + 20; idx++) {
         const article = articles[idx];
         article && newArticles.push(article);
       }
-      setNews((prevArticles) => [...prevArticles, ...newArticles]);
+      setDisplayNews((prevArticles) => [...prevArticles, ...newArticles]);
     }
-
-    return () => {
-      // Reset pagination to init
-      setNews([]);
-      setStartPage(0);
-    };
   }, [articles, newsStartPage]);
 
-  return news?.length ? (
+  useEffect(
+    () => () => {
+      // Reset pagination to init
+      setDisplayNews([]);
+      setStartPage(0);
+    },
+    [articles]
+  );
+
+  return displayNews?.length ? (
     <SC.GridContainer>
-      {news.map((article, i, array) => {
+      {displayNews.map((article, i, array) => {
         return (
           <SC.GridItem
             key={i}
@@ -57,7 +61,7 @@ const NewsCards = ({ articles, activeArticle }) => {
         );
       })}
 
-      {news?.length >= articles?.length ? null : (
+      {displayNews?.length >= articles?.length ? null : (
         <SC.ShowMoreContainer>
           <SC.ShowMoreBtn onClick={handleShowMore}>Show more</SC.ShowMoreBtn>
         </SC.ShowMoreContainer>
@@ -70,7 +74,7 @@ const NewsCards = ({ articles, activeArticle }) => {
       </Typography>
       <br />
       <Typography variant="body1" sx={{ color: "text.hint" }}>
-        Talk to Alan to bring you latest news around the globe
+        Talk to Alan to bring you news around the globe as they are happenning
       </Typography>
     </div>
   );

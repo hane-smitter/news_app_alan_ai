@@ -56,7 +56,7 @@ const NewsCard = ({
         {title}
       </Typography>
       {description && (
-        <CardActionArea href={url} target="_blank">
+        <CardActionArea href={url} target="readMoreWindow">
           <CardContent>
             <Typography variant="body2" color="textSecondary" component="p">
               {String(description).replace(/<[^>]*>/g, "")}

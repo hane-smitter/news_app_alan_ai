@@ -1,9 +1,10 @@
 import React from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import Container from "@mui/material/Container";
 
 import SC from "./styled";
 import logo from "../../images/ai_logo.png";
+import Chat from "../Chat";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -13,11 +14,10 @@ const Header = () => {
   //   }
 
   return (
-    <Container maxWidth="sm" sx={{ position: "relative" }}>
+    <Container maxWidth="md" sx={{ position: "relative" }}>
+      <Chat />
       <SC.LogoContainer>
-        <Link to="/">
-          <SC.Logo src={logo} />
-        </Link>
+        <SC.Logo src={logo} />
       </SC.LogoContainer>
       <SC.NavMenu component={"nav"}>
         <SC.NavMenuItem

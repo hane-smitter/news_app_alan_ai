@@ -31,7 +31,7 @@ export default {
     return <Stack {...rem} />;
   })(({ color }) => ({
     width: "100%",
-    height: "45vh",
+    height: "300px",
     padding: "10%",
     borderRadius: 10,
     color: "white",

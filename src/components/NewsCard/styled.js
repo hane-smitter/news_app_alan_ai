@@ -41,7 +41,7 @@ export default {
         size="small"
         color="primary"
         component={Link}
-        target="_blank"
+        target="readMoreWindow"
         {...props}
       />
     );

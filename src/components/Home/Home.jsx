@@ -1,9 +1,12 @@
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import Grow from "@mui/material/Grow";
 import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
 import SC from "./styled";
-import withNewsView from "../../ViewSwitch/ViewSwitch";
+import NewsContext from "../../context/NewsContext";
 
 const defaultCards = [
   { color: "#283655", title: "Latest News", text: "Bring me Latest News" },
@@ -34,6 +37,25 @@ const defaultCards = [
 ];
 
 const Home = () => {
+  const { aiBtn } = useContext(NewsContext);
+  const navigate = useNavigate();
+
+  function seeListClick(link = "/list") {
+    navigate(`${link}#countries`);
+
+    if (aiBtn) {
+      aiBtn.callProjectApi(
+        "getCountryNewsSources",
+        { name: "country" },
+        function (error, result) {
+          console.log(result);
+          if (error) {
+            return console.error("Could not get list of indexed countries");
+          }
+        }
+      );
+    }
+  }
   return (
     <Grow in>
       <Grid
@@ -86,9 +108,22 @@ const Home = () => {
                     e.g.&nbsp;&nbsp;
                   </Typography>
                   {infoCard.info}
+                  <Button
+                    onClick={() => seeListClick()}
+                    variant="outlined"
+                    sx={{
+                      mixBlendMode: "plus-lighter",
+                      marginLeft: "10px",
+                      fontSize: "0.75rem",
+                      lineHeight: 1.5
+                    }}
+                    size="small"
+                  >
+                    See a list
+                  </Button>
                 </Typography>
               ) : null}
-              <Typography variant="body1" sx={{ fontSize: "1.14rem" }}>
+              <Typography variant="body1" sx={{ fontSize: "1.14rem", mt: 1 }}>
                 Try saying:
                 <br />
                 <small>
