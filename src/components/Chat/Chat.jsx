@@ -3,7 +3,6 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
-import IconButton from "@mui/material/IconButton";
 
 import NewsContext from "../../context/NewsContext";
 import SC from "./styled";
@@ -53,9 +52,7 @@ const Chat = () => {
               hide
             </Button>
           </div>
-          <Typography variant="body2">
-            Type a message and send to Alan
-          </Typography>
+          <Typography variant="body2">Type it and send to Alan</Typography>
           <Typography variant="caption" sx={{ fontStyle: "italic" }}>
             <span style={{ fontWeight: "bold" }}>NB: </span>No audio feeback
             when using this feature
@@ -66,7 +63,8 @@ const Chat = () => {
               onChange={handleInputValue}
               variant="filled"
               spellCheck
-              label="Type here..."
+              placeholder="Type here..."
+              label="Text Message"
               sx={{ marginBottom: 2, width: "100%" }}
             />
 
@@ -83,7 +81,7 @@ const Chat = () => {
         </SC.ChatBox>
       ) : (
         <Link href="#" onClick={onShowChat}>
-          Can't communicate a message?
+          Unable to talk a message?
         </Link>
       )}
     </SC.ChatContainer>

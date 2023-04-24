@@ -15,42 +15,49 @@ const defaultCards = [
     title: "News By Country",
     info: "United Kingdom, Kenya, Canada, ...",
     text: "Get me news from Canada",
+    href: "/list#countries",
   },
   {
     color: "#116dd7",
     title: "News By Categories",
     info: "Science, General, Sports, Technology, Entertainment, ...",
     text: "Bring me news about science",
+    href: "/list#categories",
   },
   {
     color: "#4527a0",
     title: "News By Topics",
     info: "ChatGPT, Champions league, Tiktok, Ipad pro, Tesla, ...",
     text: "What is new about ChatGPT",
+    href: "/list#topics",
   },
   {
     color: "#955251",
     title: "News By Publishers",
     info: "BBC News, CNN, Aljazeera, Buzzfeed, National Geographic, ABC news, ...",
     text: "Bring me news from CNN",
+    href: "/list#publishers",
   },
 ];
 
 const Home = () => {
-  const { aiBtn } = useContext(NewsContext);
+  const { aiBtn, sourcesData, populateSourcesData } = useContext(NewsContext);
   const navigate = useNavigate();
 
   function seeListClick(link = "/list") {
-    navigate(`${link}#countries`);
+    navigate(link);
 
-    if (aiBtn) {
+    if (aiBtn && !Object.keys(Object(sourcesData)).length) {
       aiBtn.callProjectApi(
-        "getCountryNewsSources",
-        { name: "country" },
+        "getCollectiveSources",
+        null,
         function (error, result) {
           console.log(result);
+          populateSourcesData(result);
           if (error) {
-            return console.error("Could not get list of indexed countries");
+            return console.error(
+              "Error occured while getting list of indexed sources"
+            );
           }
         }
       );
@@ -109,13 +116,13 @@ const Home = () => {
                   </Typography>
                   {infoCard.info}
                   <Button
-                    onClick={() => seeListClick()}
+                    onClick={() => seeListClick(infoCard.href)}
                     variant="outlined"
                     sx={{
                       mixBlendMode: "plus-lighter",
                       marginLeft: "10px",
                       fontSize: "0.75rem",
-                      lineHeight: 1.5
+                      lineHeight: 1.5,
                     }}
                     size="small"
                   >
@@ -123,7 +130,7 @@ const Home = () => {
                   </Button>
                 </Typography>
               ) : null}
-              <Typography variant="body1" sx={{ fontSize: "1.14rem", mt: 1 }}>
+              <Typography variant="body1" sx={{ fontSize: "1.13rem", mt: 1 }}>
                 Try saying:
                 <br />
                 <small>

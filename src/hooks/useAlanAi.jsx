@@ -10,6 +10,7 @@ const useAlanAi = () => {
   // const [paginatedNews, setPaginatedNews] = useState([]);
   const [activeArticle, setActiveArticle] = useState(-1);
   const [countriesSupported, setCountriesSupported] = useState([["", ""]]);
+  const [sources, setSources] = useState(null);
   const newsElementRefs = useRef([]);
   const aiBtn = useRef({});
   const articleReadMoreWindow = useRef(null);
@@ -26,18 +27,15 @@ const useAlanAi = () => {
     if (tabReference) {
       tabReference.focus();
     }
-    // if (tabReference === null || tabReference.closed) {
-    // } else {
-    // }
 
     return tabReference;
   }, []);
 
   const addElemRef = useCallback(function (ref, numOfItemsInView) {
-    console.log("addElemRef ran");
+    // console.log("addElemRef ran");
     const elRefs = newsElementRefs.current;
     if (ref && elRefs?.length < numOfItemsInView) {
-      console.log("addElemRef new addition: ", ref);
+      // console.log("addElemRef new addition: ", ref);
       elRefs?.push(ref);
     }
   }, []);
@@ -50,6 +48,9 @@ const useAlanAi = () => {
   }
   function resetNews() {
     setNews([]);
+  }
+  function populateSourcesData(data) {
+    setSources(data);
   }
 
   useEffect(() => {
@@ -85,9 +86,13 @@ const useAlanAi = () => {
           case "GOTO_HOMEPAGE":
             navigate("/", { replace: true });
             break;
-          case "SHOW_SUPPORTED_COUNTRIES":
-            setCountriesSupported(Object.entries(incoming.supportedCountries));
+          case "SHOW_INCLUSIVE_SOURCES":
+            setSources(incoming.inclusiveList);
             navigate("/list");
+            break;
+          case "SHOW_SUPPORTED_COUNTRIES":
+            setSources(incoming.inclusiveList);
+            navigate("/list#countries");
             break;
           case "HIGHLIGHT":
             const indexNum = incoming.articleIdx;
@@ -169,18 +174,6 @@ const useAlanAi = () => {
 
     aiBtn.current.btnInstance = assistantBtn;
 
-    assistantBtn.callProjectApi(
-      "getCountryNewsSources",
-      { name: "country" },
-      function (error, result) {
-        console.log(result);
-        if (error) {
-          return console.error("Could not get list of indexed countries");
-        }
-        setCountriesSupported(Object.entries(result.supportedCountries));
-      }
-    );
-
     return () => {
       if (assistantBtn) {
         assistantBtn.remove();
@@ -191,11 +184,13 @@ const useAlanAi = () => {
   return {
     news,
     activeArticle,
+    countriesSupported,
+    aiBtn: aiBtn.current.btnInstance,
+    sourcesData: sources,
+    populateSourcesData,
     addElemRef,
     sendText,
     resetNews,
-    countriesSupported,
-    aiBtn: aiBtn.current.btnInstance,
   };
 };
 

@@ -3,7 +3,7 @@ import { createBrowserRouter } from "react-router-dom";
 import News from "./components/News";
 import AppLayout from "./components/AppLayout";
 import Home from "./components/Home";
-import IndexedCountries from "./components/IndexedCountries";
+import IndexedCountries from "./components/IndexedSources";
 
 const router = createBrowserRouter([
   {
