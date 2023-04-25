@@ -4,6 +4,7 @@ import { Outlet, ScrollRestoration } from "react-router-dom";
 import NewsContext from "../../context/NewsContext";
 import useAlanAi from "../../hooks/useAlanAi";
 import Header from "../Header";
+import Conversation from "../Conversation";
 
 const AppLayout = () => {
   const news = useAlanAi();
@@ -11,6 +12,7 @@ const AppLayout = () => {
     <NewsContext.Provider value={news}>
       <ScrollRestoration />
       <Header />
+      <Conversation />
       <Outlet />
     </NewsContext.Provider>
   );

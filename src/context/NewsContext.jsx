@@ -6,6 +6,10 @@ const NewsContext = createContext({
   addElemRef: () => {},
   sourcesData: null,
   populateSourcesData: () => {},
+  conversation: {
+    youSaid: "",
+    aiSaid: "",
+  },
 });
 
 export default NewsContext;

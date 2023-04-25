@@ -28,7 +28,7 @@ const defaultCards = [
     color: "#4527a0",
     title: "News By Topics",
     info: "ChatGPT, Champions league, Tiktok, Ipad pro, Tesla, ...",
-    text: "What is new about ChatGPT",
+    text: "Get me stories about ChatGPT",
     href: "/list#topics",
   },
   {

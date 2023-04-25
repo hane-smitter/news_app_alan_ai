@@ -63,7 +63,7 @@ const Chat = () => {
               onChange={handleInputValue}
               variant="filled"
               spellCheck
-              placeholder="Type here..."
+              placeholder="Start typing..."
               label="Text Message"
               sx={{ marginBottom: 2, width: "100%" }}
             />

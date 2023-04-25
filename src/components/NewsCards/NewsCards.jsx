@@ -25,9 +25,9 @@ const NewsCards = ({ articles, activeArticle }) => {
 
   useEffect(() => {
     if (articles?.length) {
-      console.log({ newsStartPage });
-      console.log("useeffect has run");
-      console.log("newsStartPage value: ", newsStartPage);
+      // console.log({ newsStartPage });
+      // console.log("useeffect has run");
+      // console.log("newsStartPage value: ", newsStartPage);
       let newArticles = [];
       console.log({ "articles?.length": articles?.length });
       for (let idx = newsStartPage; idx < newsStartPage + 20; idx++) {

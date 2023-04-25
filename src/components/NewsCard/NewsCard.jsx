@@ -43,12 +43,20 @@ const NewsCard = ({
             {new Date(publishedAt).toDateString()}
           </Typography>
           {author && (
-            <Typography variant="caption" color="textSecondary" component="h2">
-              By {author}
+            <Typography
+              variant="caption"
+              color="textSecondary"
+              component="h2"
+              sx={{ maxWidth: "200px" }}
+            >
+              By {author.replace(/<[^>]*>/g, "").replace(/^[Bb][yY]\s+/g, "")}
             </Typography>
           )}
         </Stack>
         <Typography variant="body2" color="textSecondary" component="h2">
+          <Typography variant="caption" component="span" fontStyle={"italic"}>
+            source:&nbsp;&nbsp;
+          </Typography>
           {source?.name}
         </Typography>
       </Stack>

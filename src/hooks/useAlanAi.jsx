@@ -9,18 +9,23 @@ const useAlanAi = () => {
   const [news, setNews] = useState([]);
   // const [paginatedNews, setPaginatedNews] = useState([]);
   const [activeArticle, setActiveArticle] = useState(-1);
-  const [countriesSupported, setCountriesSupported] = useState([["", ""]]);
   const [sources, setSources] = useState(null);
+  const [conversation, setConversation] = useState({
+    youSaid: "",
+    aiSaid: "",
+  });
   const newsElementRefs = useRef([]);
   const aiBtn = useRef({});
   const articleReadMoreWindow = useRef(null);
   const navigate = useNavigate();
 
   /**
-   * Stores the references to DOM element
-   * @param {Array} refsArray - Array containing refs
+   * Opens link in a new tab
+   * @param {string} url - Link to open
+   * @param {string} [windowName = _blank] - name of window
+   * @return {Window | null} - returns a tab reference
    */
-  const openTab = useCallback(function (url, windowName) {
+  const openTab = useCallback(function (url, windowName = "_blank") {
     let tabReference = articleReadMoreWindow.current;
 
     tabReference = window.open(url, windowName);
@@ -40,8 +45,6 @@ const useAlanAi = () => {
     }
   }, []);
 
-  // function setCountriesSupported(countries) {
-  //   countriesSupported.current = countries;
   // }
   function sendText(txt) {
     aiBtn.current?.btnInstance?.sendText(txt);
@@ -62,12 +65,9 @@ const useAlanAi = () => {
     let assistantBtn = alanBtn({
       key: alanSDKKey,
       onCommand: (incoming) => {
-        console.log(`number on the alan onCommand declaration`);
-        console.log(incoming.number);
-
         switch (incoming.command) {
           case "NEW_HEADLINES":
-            console.log(incoming.news);
+            // console.log(incoming.news);
             setNews(incoming.news);
             setActiveArticle(-1);
             navigate("/news");
@@ -109,11 +109,6 @@ const useAlanAi = () => {
             console.groupEnd();
             break;
           case "OPEN_ARTICLE":
-            // if (no > 20) {
-            //   return alanBtn().playText(
-            //     "The article number is out of range! Try again!"
-            //   );
-            // }
             const numOfNewsInView = newsElementRefs.current?.length;
             try {
               console.log("incoming.article: ", incoming.article);
@@ -152,13 +147,18 @@ const useAlanAi = () => {
             break;
         }
       },
-      onEvent: function (e) {
-        if (e.name === "parsed") {
-          console.info("Sent msg:", e.text);
-        } else if (e.name === "text") {
-          console.log("text event");
-          console.log(e);
-          console.info("Received msg:", e.text);
+      onEvent: function (event) {
+        if (event.name === "parsed") {
+          const youSaid = event.text;
+          setConversation((prev) =>
+            Object.assign({}, prev, { youSaid, aiSaid: "..." })
+          );
+          // console.info("Sent msg:", youSaid);
+        } else if (event.name === "text") {
+          const aiSaid = event.text;
+          setConversation((prev) => Object.assign({}, prev, { aiSaid }));
+          // console.log(event);
+          // console.info("Received msg:", aiSaid);
         }
       },
       // onButtonState: async function (status) {
@@ -184,9 +184,9 @@ const useAlanAi = () => {
   return {
     news,
     activeArticle,
-    countriesSupported,
     aiBtn: aiBtn.current.btnInstance,
     sourcesData: sources,
+    conversation,
     populateSourcesData,
     addElemRef,
     sendText,
