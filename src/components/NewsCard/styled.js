@@ -14,6 +14,8 @@ export default {
     flex-direction: column;
     justify-content: space-between;
     border-bottom: ${isActive ? "10px solid #22289a" : "#ffffff"};
+    outline: ${isActive ? "2px solid black" : "unset"};
+    outline-offset: 1.7px;
   `
   ),
   ArticleCardActions: styled(CardActionArea)({
@@ -21,7 +23,7 @@ export default {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    cursor: "default"
+    cursor: "default",
   }),
   //   media: {
   //     height: 250,

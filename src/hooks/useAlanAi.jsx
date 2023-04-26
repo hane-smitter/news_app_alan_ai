@@ -10,6 +10,7 @@ const useAlanAi = () => {
   // const [paginatedNews, setPaginatedNews] = useState([]);
   const [activeArticle, setActiveArticle] = useState(-1);
   const [sources, setSources] = useState(null);
+  const [aiConnected, setAiConnected] = useState(false);
   const [conversation, setConversation] = useState({
     youSaid: "",
     aiSaid: "",
@@ -161,6 +162,14 @@ const useAlanAi = () => {
           // console.info("Received msg:", aiSaid);
         }
       },
+      onConnectionStatus: function (status) {
+        if (status === "authorized") {
+          setAiConnected(true);
+        } else if (status === "disconnected") {
+          setAiConnected(false);
+        }
+        console.log("The connection status in useAlanAi hook is " + status);
+      },
       // onButtonState: async function (status) {
       //   if (status === "ONLINE") {
       //     if (!this.greetingWasSaid) {
@@ -184,9 +193,10 @@ const useAlanAi = () => {
   return {
     news,
     activeArticle,
-    aiBtn: aiBtn.current.btnInstance,
+    assistantBtn: aiBtn.current.btnInstance,
     sourcesData: sources,
     conversation,
+    assistantConnected: aiConnected,
     populateSourcesData,
     addElemRef,
     sendText,

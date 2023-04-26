@@ -7,8 +7,10 @@ export default {
   GridContainer: styled((props) => {
     return <Grid container alignItems="stretch" spacing={3} {...props} />;
   })({
-    gap: "10px",
+    columnGap: "10px",
+    rowGap: "20px",
     margin: 0,
+    justifyContent: "space-around",
   }),
 
   GridItem: styled((props) => {
@@ -17,8 +19,9 @@ export default {
       <Grid item xs={12} sm={6} md={4} lg={3} ref={forwardRef} {...rest} />
     );
   })(({ isActive }) => ({
-    ...(isActive && { outline: "2px solid black" }),
+    // ...(isActive && { outline: "2px solid black" }),
     padding: "0!important",
+    minWidth: "290px",
   })),
   ShowMoreContainer: styled(Box)({
     width: "100%",

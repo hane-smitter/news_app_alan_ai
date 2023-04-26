@@ -10,6 +10,8 @@ const NewsContext = createContext({
     youSaid: "",
     aiSaid: "",
   },
+  assistantBtn: {},
+  assistantConnected: false,
 });
 
 export default NewsContext;

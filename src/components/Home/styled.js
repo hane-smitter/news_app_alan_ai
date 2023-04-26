@@ -3,12 +3,28 @@ import Stack from "@mui/material/Stack";
 import styled from "@mui/system/styled";
 
 export default {
+  HeadingWrapper: styled("div")({
+    width: "100%",
+    textAlign: "center",
+    marginBottom: "15px",
+    fontSize: "12px",
+
+    "@media (min-width: 600px)": {
+      fontSize: "13px",
+    },
+    "@media (min-width: 900px)": {
+      fontSize: "16px",
+    },
+    "@media (min-width: 1000px)": {
+      fontSize: "22px",
+    },
+  }),
   QuickStartHeading: styled(Typography)({
     position: "relative",
     color: "#626262",
     fontWeight: 700,
     textTransform: "uppercase",
-    fontSize: "3rem",
+    fontSize: "3em",
     letterSpacing: "0.8px",
     textAlign: "center",
     display: "inline-block",

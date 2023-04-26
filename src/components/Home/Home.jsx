@@ -41,18 +41,19 @@ const defaultCards = [
 ];
 
 const Home = () => {
-  const { aiBtn, sourcesData, populateSourcesData } = useContext(NewsContext);
+  const { assistantConnected, assistantBtn, sourcesData, populateSourcesData } =
+    useContext(NewsContext);
   const navigate = useNavigate();
 
   function seeListClick(link = "/list") {
     navigate(link);
 
-    if (aiBtn && !Object.keys(Object(sourcesData)).length) {
-      aiBtn.callProjectApi(
+    if (assistantBtn && !Object.keys(Object(sourcesData)).length) {
+      assistantBtn.callProjectApi(
         "getCollectiveSources",
         null,
         function (error, result) {
-          console.log(result);
+          // console.log(result);
           populateSourcesData(result);
           if (error) {
             return console.error(
@@ -75,9 +76,16 @@ const Home = () => {
           margin: 0,
         }}
       >
-        <div style={{ width: "100%", textAlign: "center", marginBottom: 15 }}>
+        <SC.HeadingWrapper>
           <SC.QuickStartHeading variant="h1">quick start</SC.QuickStartHeading>
-        </div>
+        </SC.HeadingWrapper>
+        <Typography
+          variant="body1"
+          sx={{ ml: 1, textAlign: "center", width: "100%" }}
+        >
+          The cards below contain phrases about how you can request news from
+          Alan.
+        </Typography>
         {defaultCards.map((infoCard, idx) => (
           <Grid
             item
@@ -125,6 +133,7 @@ const Home = () => {
                       lineHeight: 1.5,
                     }}
                     size="small"
+                    disabled={!assistantConnected}
                   >
                     See a list
                   </Button>

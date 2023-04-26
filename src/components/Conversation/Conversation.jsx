@@ -35,7 +35,17 @@ const Conversation = () => {
         </SC.ConversationItem>
       </SC.ConversationBox>
     </SC.ConversationContainer>
-  ) : null;
+  ) : (
+    <Typography
+      variant="caption"
+      fontStyle={"italic"}
+      textAlign={"center"}
+      component="div"
+      sx={{ my: 1 }}
+    >
+      Tap open the microphone and ask Alan anything about NEWS
+    </Typography>
+  );
 };
 
 export default React.memo(Conversation);

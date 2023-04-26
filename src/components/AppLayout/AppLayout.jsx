@@ -1,5 +1,6 @@
 import React from "react";
 import { Outlet, ScrollRestoration } from "react-router-dom";
+import Container from "@mui/material/Container";
 
 import NewsContext from "../../context/NewsContext";
 import useAlanAi from "../../hooks/useAlanAi";
@@ -13,7 +14,10 @@ const AppLayout = () => {
       <ScrollRestoration />
       <Header />
       <Conversation />
-      <Outlet />
+
+      <Container maxWidth="lg" sx={{ paddingBottom: "30px" }}>
+        <Outlet />
+      </Container>
     </NewsContext.Provider>
   );
 };
