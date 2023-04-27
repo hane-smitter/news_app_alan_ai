@@ -1,6 +1,4 @@
-import React, { useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
-// import Container from "@mui/material/Container";
+import React, { useEffect, useContext, useRef, useCallback } from "react";
 import Typography from "@mui/material/Typography";
 
 import NewsContext from "../../context/NewsContext";
@@ -11,24 +9,64 @@ import Topics from "./Topics";
 
 const IndexedSources = () => {
   const { sourcesData } = useContext(NewsContext);
+  const sourcesRef = useRef([]);
   const location = window.location;
-  const navigate = useNavigate();
-
-  // console.log({ location });
-  // console.log({ sourcesData });
 
   useEffect(() => {
-    if (Object.keys(Object(sourcesData)).length) {
-      navigate(location.hash);
+    if (Object.keys(Object(sourcesData)).length && location.hash) {
+      const { element: itemOfInterest } = sourcesRef.current.find(
+        (ref) => ref.name === location?.hash
+      );
+      console.log({ itemOfInterest });
+      itemOfInterest &&
+        itemOfInterest.scrollIntoView({ block: "start", behavior: "smooth" });
     }
   }, [sourcesData]);
 
+  useEffect(() => {
+    const controller = new AbortController();
+
+    window.addEventListener(
+      "hashchange",
+      function () {
+        const { element } = sourcesRef.current.find(
+          (ref) => ref.name === location?.hash
+        );
+        element?.scrollIntoView({ block: "start", behavior: "smooth" });
+      },
+      {
+        signal: controller?.signal,
+      }
+    );
+
+    return () => controller?.abort();
+  }, []);
+
+  /**
+   * Stores references to HTML elements
+   * @param {object} refObject - Object with name and element pair
+   * @param {string} refObject.name - id of element with a leading hash
+   * @param {HTMLElement} refObject.element - The DOM Element
+   * @example
+   * addRef({
+   *    name: "#info",
+   *    element: <div id="info">...</div>
+   * })
+   * @returns {void}
+   */
+  const addRef = useCallback(function (refObject) {
+    // console.log("refObject:: ", refObject);
+    if (refObject) {
+      sourcesRef.current.push(refObject);
+    }
+  }, []);
+
   return Object.keys(Object(sourcesData)).length ? (
     <>
-      <Countries data={sourcesData?.countries} />
-      <Publishers data={sourcesData?.publishers} />
-      <Categories data={sourcesData?.categories} />
-      <Topics data={sourcesData?.topics} />
+      <Countries data={sourcesData?.countries} addRef={addRef} />
+      <Publishers data={sourcesData?.publishers} addRef={addRef} />
+      <Categories data={sourcesData?.categories} addRef={addRef} />
+      <Topics data={sourcesData?.topics} addRef={addRef} />
     </>
   ) : (
     <div>

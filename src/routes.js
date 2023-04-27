@@ -3,7 +3,7 @@ import { createBrowserRouter } from "react-router-dom";
 import News from "./components/News";
 import AppLayout from "./components/AppLayout";
 import Home from "./components/Home";
-import IndexedCountries from "./components/IndexedSources";
+import IndexedSources from "./components/IndexedSources";
 
 const router = createBrowserRouter([
   {
@@ -14,11 +14,10 @@ const router = createBrowserRouter([
       { path: "news", element: <News /> },
       {
         path: "list",
-        element: <IndexedCountries />,
+        element: <IndexedSources />,
       },
     ],
   },
-  ,
 ]);
 
 export default router;

@@ -3,11 +3,19 @@ import { v4 as uuidv4 } from "uuid";
 
 import { generalStyles as GS, categoryStyles as CatS } from "./styled";
 
-const Categories = ({ data: categories }) => {
+const Categories = ({ data: categories, addRef }) => {
   return (
-    <div id="categories">
-      <GS.ListHeading sx={{ mt: 3 }}>List of Categories</GS.ListHeading>
-      <GS.HelperInfo>Get news within the following categories</GS.HelperInfo>
+    <div
+      id="categories"
+      ref={(element) => addRef({ name: "#categories", element })}
+    >
+      <GS.ListHeading
+        sx={{ mt: 3 }}
+        onClick={() => (window.location.hash = "#categories")}
+      >
+        List of Categories
+      </GS.ListHeading>
+      <GS.HelperInfo>You can get news in the below categories</GS.HelperInfo>
       <GS.GridContainer>
         {categories[0]?.length
           ? (() => {
@@ -58,7 +66,7 @@ const Categories = ({ data: categories }) => {
                   </GS.GridItem>
                 );
 
-            //   console.log({ categorySection: gridContainerData });
+              //   console.log({ categorySection: gridContainerData });
               return gridContainerData;
             })()
           : null}

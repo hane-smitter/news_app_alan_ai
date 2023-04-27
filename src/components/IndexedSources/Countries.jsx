@@ -3,10 +3,18 @@ import { v4 as uuidv4 } from "uuid";
 
 import { generalStyles as GS, countryStyles as CS } from "./styled";
 
-const Countries = ({ data: countries }) => {
+const Countries = ({ data: countries, addRef }) => {
   return (
-    <div id="countries">
-      <GS.ListHeading sx={{ mt: 1 }}>List of countries</GS.ListHeading>
+    <div
+      id="countries"
+      ref={(element) => addRef({ name: "#countries", element })}
+    >
+      <GS.ListHeading
+        sx={{ mt: 1 }}
+        onClick={() => (window.location.hash = "#countries")}
+      >
+        List of countries
+      </GS.ListHeading>
       <GS.HelperInfo>You can obtain news from these countries</GS.HelperInfo>
       <GS.GridContainer>
         {countries[0][0]?.length
@@ -27,6 +35,7 @@ const Countries = ({ data: countries }) => {
                   <CS.CountryInfo key={uuidv4()}>
                     <CS.CountryFlag
                       src={`https://flagcdn.com/${indexedCountries[idx][0]}.svg`}
+                      alt={`${indexedCountries[idx][1]} flag`}
                     />
                     <CS.CountryName variant="body2">
                       {indexedCountries[idx][1]}
@@ -60,7 +69,7 @@ const Countries = ({ data: countries }) => {
                   </GS.GridItem>
                 );
 
-            //   console.log({ CountriesSection: gridContainerData });
+              //   console.log({ CountriesSection: gridContainerData });
               return gridContainerData;
             })()
           : null}

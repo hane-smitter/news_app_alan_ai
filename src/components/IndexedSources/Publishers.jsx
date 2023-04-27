@@ -3,10 +3,18 @@ import { v4 as uuidv4 } from "uuid";
 
 import { generalStyles as GS, publisherStyles as PS } from "./styled";
 
-const Publishers = ({ data: publishers }) => {
+const Publishers = ({ data: publishers, addRef }) => {
   return (
-    <div id="publishers">
-      <GS.ListHeading sx={{ mt: 3 }}>List of publishers</GS.ListHeading>
+    <div
+      id="publishers"
+      ref={(element) => addRef({ name: "#publishers", element })}
+    >
+      <GS.ListHeading
+        sx={{ mt: 3 }}
+        onClick={() => (window.location.hash = "#publishers")}
+      >
+        List of publishers
+      </GS.ListHeading>
       <GS.HelperInfo>possible sources of news</GS.HelperInfo>
       <GS.GridContainer>
         {publishers[0][0]?.length
@@ -65,7 +73,7 @@ const Publishers = ({ data: publishers }) => {
                   </GS.GridItem>
                 );
 
-            //   console.log({ PublisherSection: gridContainerData });
+              //   console.log({ PublisherSection: gridContainerData });
               return gridContainerData;
             })()
           : null}

@@ -9,6 +9,19 @@ const generalStyles = {
     return <Typography variant="h4" component="h1" {...props} />;
   })({
     textTransform: "uppercase",
+    cursor: "pointer",
+
+    "&:hover::after": {
+      opacity: 1,
+    },
+    "&::after": {
+      content: "'#'",
+      opacity: 0,
+      transition: "opacity 500ms linear",
+      marginLeft: "8px",
+      textDecoration: "underline",
+      color: "#ad8661",
+    },
   }),
   HelperInfo: styled((props) => {
     return <Typography variant="body2" component="p" {...props} />;

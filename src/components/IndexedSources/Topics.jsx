@@ -3,10 +3,15 @@ import { v4 as uuidv4 } from "uuid";
 
 import { generalStyles as GS, topicStyles as TopS } from "./styled";
 
-const Topics = ({ data: topics }) => {
+const Topics = ({ data: topics, addRef }) => {
   return (
-    <div id="topics">
-      <GS.ListHeading sx={{ mt: 3 }}>News by Topics</GS.ListHeading>
+    <div id="topics" ref={(element) => addRef({ name: "#topics", element })}>
+      <GS.ListHeading
+        sx={{ mt: 3 }}
+        onClick={() => (window.location.hash = "#topics")}
+      >
+        News by Topics
+      </GS.ListHeading>
       <GS.HelperInfo>
         You can get news about a topic you want. Here are examples to get you
         started
